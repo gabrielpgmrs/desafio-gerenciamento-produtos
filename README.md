@@ -8,8 +8,6 @@
 
 ## Funcionalidades
 
-Requisitos Funcionais:
-
 Adicionar Produto: Permite que o usuário adicione um novo produto ao inventário.
 
 Solicitar ao usuário a inserção dos seguintes dados:
