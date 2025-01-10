@@ -21,7 +21,7 @@ public class Inventario {
             if (nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
                 break;
             } else {
-                System.out.println("Erro: O nome deve conter apenas letras e espaços.");
+                System.out.println("Erro: O nome deve conter apenas letras e espacos.");
             }
         }
 
@@ -33,7 +33,7 @@ public class Inventario {
             if (categoria.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
                 break;
             } else {
-                System.out.println("Erro: A categoria deve conter apenas letras e espaços.");
+                System.out.println("Erro: A categoria deve conter apenas letras e espacos.");
             }
         }
 
@@ -49,7 +49,7 @@ public class Inventario {
                     System.out.println("Erro: A quantidade não pode ser negativa.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um número inteiro válido.");
+                System.out.println("Erro: Digite um numero inteiro valido.");
             }
         }
 
@@ -57,15 +57,15 @@ public class Inventario {
         double preco;
         while (true) {
             try {
-                System.out.print("Preço: ");
-                preco = Double.parseDouble(scanner.nextLine());
+                System.out.print("Preco: ");
+                preco = Double.parseDouble(scanner.nextLine().replace(",", "."));
                 if (preco >= 0) {
                     break;
                 } else {
-                    System.out.println("Erro: O preço não pode ser negativo.");
+                    System.out.println("Erro: O preco nao pode ser negativo.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um valor numérico válido.");
+                System.out.println("Erro: Digite um valor numerico valido.");
             }
         }
 
@@ -82,7 +82,7 @@ public class Inventario {
         }
 
         System.out.printf("%-6s %-20s %-15s %-10s %-10s%n", 
-            "ID", "Nome", "Categoria", "Quantidade", "Preço");
+            "ID", "Nome", "Categoria", "Quantidade", "Preco");
         System.out.println("-".repeat(65));
 
         for (Produto p : produtos) {
@@ -97,18 +97,11 @@ public class Inventario {
         
         Produto produto = buscarPorId(id);
         if (produto == null) {
-            System.out.println("Produto não encontrado.");
+            System.out.println("Produto nao encontrado.");
             return;
         }
 
         System.out.println("Deixe em branco para manter o valor atual.");
-        
-        // Variáveis temporárias para armazenar as novas informações
-        String novoNome = produto.getNome();
-        String novaCategoria = produto.getCategoria();
-        int novaQuantidade = produto.getQuantidade();
-        double novoPreco = produto.getPreco();
-        boolean dadosValidos = true;
         
         // Validação do nome
         while (true) {
@@ -117,118 +110,69 @@ public class Inventario {
             if (nome.isEmpty()) {
                 break;
             } else if (nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
-                novoNome = nome;
+                produto.setNome(nome);
                 break;
             } else {
-                System.out.println("Erro: O nome deve conter apenas letras e espaços.");
-                dadosValidos = false;
-                break;
+                System.out.println("Erro: O nome deve conter apenas letras e espacos.");
             }
         }
 
-        if (dadosValidos) {
-            // Validação da categoria
-            while (true) {
-                System.out.print("Nova categoria (" + produto.getCategoria() + "): ");
-                String categoria = scanner.nextLine();
-                if (categoria.isEmpty()) {
-                    break;
-                } else if (categoria.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
-                    novaCategoria = categoria;
+        // Validação da categoria
+        while (true) {
+            System.out.print("Nova categoria (" + produto.getCategoria() + "): ");
+            String categoria = scanner.nextLine();
+            if (categoria.isEmpty()) {
+                break;
+            } else if (categoria.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                produto.setCategoria(categoria);
+                break;
+            } else {
+                System.out.println("Erro: A categoria deve conter apenas letras e espacos.");
+            }
+        }
+
+        // Validação da quantidade
+        while (true) {
+            System.out.print("Nova quantidade (" + produto.getQuantidade() + "): ");
+            String quantidadeStr = scanner.nextLine();
+            if (quantidadeStr.isEmpty()) {
+                break;
+            }
+            try {
+                int quantidade = Integer.parseInt(quantidadeStr);
+                if (quantidade >= 0) {
+                    produto.setQuantidade(quantidade);
                     break;
                 } else {
-                    System.out.println("Erro: A categoria deve conter apenas letras e espaços.");
-                    dadosValidos = false;
-                    break;
+                    System.out.println("Erro: A quantidade nao pode ser negativa.");
                 }
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um numero inteiro valido.");
             }
         }
 
-        if (dadosValidos) {
-            // Validação da quantidade
-            while (true) {
-                System.out.print("Nova quantidade (" + produto.getQuantidade() + "): ");
-                String quantidadeStr = scanner.nextLine();
-                if (quantidadeStr.isEmpty()) {
+        // Validação do preço
+        while (true) {
+            System.out.print("Novo preco (" + produto.getPreco() + "): ");
+            String precoStr = scanner.nextLine();
+            if (precoStr.isEmpty()) {
+                break;
+            }
+            try {
+                double preco = Double.parseDouble(precoStr.replace(",", "."));
+                if (preco >= 0) {
+                    produto.setPreco(preco);
                     break;
+                } else {
+                    System.out.println("Erro: O preco nao pode ser negativo.");
                 }
-                try {
-                    int quantidade = Integer.parseInt(quantidadeStr);
-                    if (quantidade >= 0) {
-                        novaQuantidade = quantidade;
-                        break;
-                    } else {
-                        System.out.println("Erro: A quantidade não pode ser negativa.");
-                        dadosValidos = false;
-                        break;
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Erro: Digite um número inteiro válido.");
-                    dadosValidos = false;
-                    break;
-                }
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um valor numerico valido.");
             }
         }
 
-        if (dadosValidos) {
-            // Validação do preço
-            while (true) {
-                System.out.print("Novo preço (" + produto.getPreco() + "): ");
-                String precoStr = scanner.nextLine();
-                if (precoStr.isEmpty()) {
-                    break;
-                }
-                try {
-                    double preco = Double.parseDouble(precoStr);
-                    if (preco >= 0) {
-                        novoPreco = preco;
-                        break;
-                    } else {
-                        System.out.println("Erro: O preço não pode ser negativo.");
-                        dadosValidos = false;
-                        break;
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Erro: Digite um valor numérico válido.");
-                    dadosValidos = false;
-                    break;
-                }
-            }
-        }
-
-        // Só atualiza o produto se todos os dados forem válidos
-        if (dadosValidos) {
-            // Mostra um resumo das alterações
-            System.out.println("\nResumo das alterações:");
-            if (!novoNome.equals(produto.getNome())) {
-                System.out.println("Nome: " + produto.getNome() + " -> " + novoNome);
-            }
-            if (!novaCategoria.equals(produto.getCategoria())) {
-                System.out.println("Categoria: " + produto.getCategoria() + " -> " + novaCategoria);
-            }
-            if (novaQuantidade != produto.getQuantidade()) {
-                System.out.println("Quantidade: " + produto.getQuantidade() + " -> " + novaQuantidade);
-            }
-            if (novoPreco != produto.getPreco()) {
-                System.out.println("Preço: " + produto.getPreco() + " -> " + novoPreco);
-            }
-
-            System.out.print("\nDeseja salvar as alterações? (S/N): ");
-            String confirmacao = scanner.nextLine();
-            
-            if (confirmacao.equalsIgnoreCase("S")) {
-                produto.setNome(novoNome);
-                produto.setCategoria(novaCategoria);
-                produto.setQuantidade(novaQuantidade);
-                produto.setPreco(novoPreco);
-                salvarDados();
-                System.out.println("Produto atualizado com sucesso!");
-            } else {
-                System.out.println("Atualização cancelada pelo usuário.");
-            }
-        } else {
-            System.out.println("Atualização cancelada devido a dados inválidos.");
-        }
+        salvarDados();
+        System.out.println("Produto atualizado com sucesso!");
     }
 
     public void excluirProduto() {
@@ -237,18 +181,17 @@ public class Inventario {
         
         Produto produto = buscarPorId(id);
         if (produto == null) {
-            System.out.println("Produto não encontrado.");
+            System.out.println("Produto nao encontrado.");
             return;
         }
 
-        System.out.print("Confirma a exclusão do produto " + produto.getNome() + "? (S/N): ");
+        System.out.print("Confirma a exclusao do produto " + produto.getNome() + "? (S/N): ");
         String confirmacao = scanner.nextLine();
         
         if (confirmacao.equalsIgnoreCase("S")) {
             produtos.remove(produto);
-            Produto.liberarId(produto.getId()); // Libera o ID para reutilização
             salvarDados();
-            System.out.println("Produto excluído com sucesso!");
+            System.out.println("Produto excluido com sucesso!");
         }
     }
 
@@ -261,7 +204,7 @@ public class Inventario {
             String id = scanner.nextLine();
             Produto produto = buscarPorId(id);
             if (produto != null) exibirProduto(produto);
-            else System.out.println("Produto não encontrado.");
+            else System.out.println("Produto nao encontrado.");
         } else if (opcao.equals("2")) {
             System.out.print("Digite o nome: ");
             String nome = scanner.nextLine().toLowerCase();
@@ -291,7 +234,7 @@ public class Inventario {
         System.out.println("Nome: " + p.getNome());
         System.out.println("Categoria: " + p.getCategoria());
         System.out.println("Quantidade: " + p.getQuantidade());
-        System.out.println("Preço: R$" + String.format("%.2f", p.getPreco()));
+        System.out.println("Preco: R$" + String.format("%.2f", p.getPreco()));
     }
 
     private void salvarDados() {
@@ -323,17 +266,14 @@ public class Inventario {
                 json.append(linha);
             }
             
-            // Ao carregar os produtos, registra os IDs em uso
+            // Ao carregar os produtos, encontre o maior ID
+            int maiorId = 0;
             for (Produto p : produtos) {
-                Produto.registrarIdEmUso(p.getId());
+                int idAtual = Integer.parseInt(p.getId());
+                if (idAtual > maiorId) {
+                    maiorId = idAtual;
+                }
             }
-            
-            // Encontra o maior ID para atualizar o contador
-            int maiorId = produtos.stream()
-                .mapToInt(p -> Integer.parseInt(p.getId()))
-                .max()
-                .orElse(0);
-                
             // Atualiza o contador para continuar a sequência
             Produto.atualizarContador(maiorId);
             

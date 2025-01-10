@@ -1,9 +1,5 @@
-import java.util.Set;
-import java.util.TreeSet;
-
 public class Produto {
     private static int contador = 0;
-    private static Set<Integer> idsEmUso = new TreeSet<>();
     private String id;
     private String nome;
     private String categoria;
@@ -11,30 +7,12 @@ public class Produto {
     private double preco;
 
     public Produto(String nome, String categoria, int quantidade, double preco) {
-        this.id = gerarProximoId();
+        contador++;
+        this.id = String.format("%03d", contador);
         this.nome = nome;
         this.categoria = categoria;
         this.quantidade = quantidade;
         this.preco = preco;
-    }
-
-    private String gerarProximoId() {
-        // Procura o primeiro ID disponível
-        int novoId = 1;
-        while (idsEmUso.contains(novoId)) {
-            novoId++;
-        }
-        idsEmUso.add(novoId);
-        contador = Math.max(contador, novoId);
-        return String.format("%03d", novoId);
-    }
-
-    public static void liberarId(String id) {
-        try {
-            idsEmUso.remove(Integer.parseInt(id));
-        } catch (NumberFormatException e) {
-            // Ignora se o ID não for um número válido
-        }
     }
 
     public String getId() { return id; }
@@ -49,13 +27,5 @@ public class Produto {
 
     public static void atualizarContador(int ultimoId) {
         contador = ultimoId;
-    }
-
-    public static void registrarIdEmUso(String id) {
-        try {
-            idsEmUso.add(Integer.parseInt(id));
-        } catch (NumberFormatException e) {
-            // Ignora se o ID não for um número válido
-        }
     }
 }

@@ -6,14 +6,14 @@ public class Main {
         Inventario inventario = new Inventario();
         
         while (true) {
-            System.out.println("\n=== Sistema de Gerenciamento de Inventário ===");
+            System.out.println("\n=== Sistema de Gerenciamento de Inventario ===");
             System.out.println("1. Adicionar Produto");
             System.out.println("2. Listar Produtos");
             System.out.println("3. Atualizar Produto");
             System.out.println("4. Excluir Produto");
             System.out.println("5. Buscar Produto");
             System.out.println("6. Sair");
-            System.out.print("Escolha uma opção: ");
+            System.out.print("Escolha uma opcao: ");
             
             String opcao = scanner.nextLine();
             
@@ -24,7 +24,7 @@ public class Main {
                 case "4": inventario.excluirProduto(); break;
                 case "5": inventario.buscarProduto(); break;
                 case "6": System.out.println("Encerrando..."); return;
-                default: System.out.println("Opção inválida!");
+                default: System.out.println("Opcao invalida!");
             }
         }
     }
