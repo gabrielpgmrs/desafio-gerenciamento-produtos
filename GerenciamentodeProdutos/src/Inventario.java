@@ -13,14 +13,61 @@ public class Inventario {
     }
 
     public void adicionarProduto() {
-        System.out.print("Nome do produto: ");
-        String nome = scanner.nextLine();
-        System.out.print("Categoria: ");
-        String categoria = scanner.nextLine();
-        System.out.print("Quantidade: ");
-        int quantidade = Integer.parseInt(scanner.nextLine());
-        System.out.print("Preço: ");
-        double preco = Double.parseDouble(scanner.nextLine());
+        // Validação do nome
+        String nome;
+        while (true) {
+            System.out.print("Nome do produto: ");
+            nome = scanner.nextLine();
+            if (nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                break;
+            } else {
+                System.out.println("Erro: O nome deve conter apenas letras e espaços.");
+            }
+        }
+
+        // Validação da categoria
+        String categoria;
+        while (true) {
+            System.out.print("Categoria: ");
+            categoria = scanner.nextLine();
+            if (categoria.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                break;
+            } else {
+                System.out.println("Erro: A categoria deve conter apenas letras e espaços.");
+            }
+        }
+
+        // Validação da quantidade
+        int quantidade;
+        while (true) {
+            try {
+                System.out.print("Quantidade: ");
+                quantidade = Integer.parseInt(scanner.nextLine());
+                if (quantidade >= 0) {
+                    break;
+                } else {
+                    System.out.println("Erro: A quantidade não pode ser negativa.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um número inteiro válido.");
+            }
+        }
+
+        // Validação do preço
+        double preco;
+        while (true) {
+            try {
+                System.out.print("Preço: ");
+                preco = Double.parseDouble(scanner.nextLine());
+                if (preco >= 0) {
+                    break;
+                } else {
+                    System.out.println("Erro: O preço não pode ser negativo.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um valor numérico válido.");
+            }
+        }
 
         Produto produto = new Produto(nome, categoria, quantidade, preco);
         produtos.add(produto);
@@ -56,21 +103,73 @@ public class Inventario {
 
         System.out.println("Deixe em branco para manter o valor atual.");
         
-        System.out.print("Novo nome (" + produto.getNome() + "): ");
-        String nome = scanner.nextLine();
-        if (!nome.isEmpty()) produto.setNome(nome);
+        // Validação do nome
+        while (true) {
+            System.out.print("Novo nome (" + produto.getNome() + "): ");
+            String nome = scanner.nextLine();
+            if (nome.isEmpty()) {
+                break;
+            } else if (nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                produto.setNome(nome);
+                break;
+            } else {
+                System.out.println("Erro: O nome deve conter apenas letras e espaços.");
+            }
+        }
 
-        System.out.print("Nova categoria (" + produto.getCategoria() + "): ");
-        String categoria = scanner.nextLine();
-        if (!categoria.isEmpty()) produto.setCategoria(categoria);
+        // Validação da categoria
+        while (true) {
+            System.out.print("Nova categoria (" + produto.getCategoria() + "): ");
+            String categoria = scanner.nextLine();
+            if (categoria.isEmpty()) {
+                break;
+            } else if (categoria.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                produto.setCategoria(categoria);
+                break;
+            } else {
+                System.out.println("Erro: A categoria deve conter apenas letras e espaços.");
+            }
+        }
 
-        System.out.print("Nova quantidade (" + produto.getQuantidade() + "): ");
-        String quantidade = scanner.nextLine();
-        if (!quantidade.isEmpty()) produto.setQuantidade(Integer.parseInt(quantidade));
+        // Validação da quantidade
+        while (true) {
+            System.out.print("Nova quantidade (" + produto.getQuantidade() + "): ");
+            String quantidadeStr = scanner.nextLine();
+            if (quantidadeStr.isEmpty()) {
+                break;
+            }
+            try {
+                int quantidade = Integer.parseInt(quantidadeStr);
+                if (quantidade >= 0) {
+                    produto.setQuantidade(quantidade);
+                    break;
+                } else {
+                    System.out.println("Erro: A quantidade não pode ser negativa.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um número inteiro válido.");
+            }
+        }
 
-        System.out.print("Novo preço (" + produto.getPreco() + "): ");
-        String preco = scanner.nextLine();
-        if (!preco.isEmpty()) produto.setPreco(Double.parseDouble(preco));
+        // Validação do preço
+        while (true) {
+            System.out.print("Novo preço (" + produto.getPreco() + "): ");
+            String precoStr = scanner.nextLine();
+            if (precoStr.isEmpty()) {
+                break;
+            }
+            try {
+                double preco = Double.parseDouble(precoStr);
+                if (preco >= 0) {
+                    produto.setPreco(preco);
+                    break;
+                } else {
+                    System.out.println("Erro: O preço não pode ser negativo.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um valor numérico válido.");
+            }
+        }
 
         salvarDados();
         System.out.println("Produto atualizado com sucesso!");
@@ -118,7 +217,7 @@ public class Inventario {
                 }
             }
             
-            if (!encontrou) System.out.println("Nenhum produto não encontrado.");
+            if (!encontrou) System.out.println("Nenhum produto encontrado.");
         }
     }
 

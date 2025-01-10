@@ -1,4 +1,3 @@
-// Produto.java
 public class Produto {
     private static int contador = 0;
     private String id;
