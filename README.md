@@ -46,12 +46,6 @@ Buscar Produto: Buscar e exibir detalhes de um produto específico pelo id ou pe
 - Exibir todas as informações detalhadas do produto encontrado.
 - Exibir mensagem apropriada se nenhum produto for encontrado.
 
-
-Tecnologias e Ferramentas:
-A aplicação foi criada utilizando a linguagem Java.
-As interações podem ser realizadas através de comandos no terminal.
-
-
 ## Como Rodar o Projeto
 
 1. Faça o download do repositório através do arquivo zip ou do terminal usando o
