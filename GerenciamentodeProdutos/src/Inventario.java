@@ -103,6 +103,13 @@ public class Inventario {
 
         System.out.println("Deixe em branco para manter o valor atual.");
         
+        // Variáveis temporárias para armazenar as novas informações
+        String novoNome = produto.getNome();
+        String novaCategoria = produto.getCategoria();
+        int novaQuantidade = produto.getQuantidade();
+        double novoPreco = produto.getPreco();
+        boolean dadosValidos = true;
+        
         // Validação do nome
         while (true) {
             System.out.print("Novo nome (" + produto.getNome() + "): ");
@@ -110,69 +117,118 @@ public class Inventario {
             if (nome.isEmpty()) {
                 break;
             } else if (nome.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
-                produto.setNome(nome);
+                novoNome = nome;
                 break;
             } else {
                 System.out.println("Erro: O nome deve conter apenas letras e espaços.");
+                dadosValidos = false;
+                break;
             }
         }
 
-        // Validação da categoria
-        while (true) {
-            System.out.print("Nova categoria (" + produto.getCategoria() + "): ");
-            String categoria = scanner.nextLine();
-            if (categoria.isEmpty()) {
-                break;
-            } else if (categoria.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
-                produto.setCategoria(categoria);
-                break;
+        if (dadosValidos) {
+            // Validação da categoria
+            while (true) {
+                System.out.print("Nova categoria (" + produto.getCategoria() + "): ");
+                String categoria = scanner.nextLine();
+                if (categoria.isEmpty()) {
+                    break;
+                } else if (categoria.matches("^[A-Za-zÀ-ÿ\\s]+$")) {
+                    novaCategoria = categoria;
+                    break;
+                } else {
+                    System.out.println("Erro: A categoria deve conter apenas letras e espaços.");
+                    dadosValidos = false;
+                    break;
+                }
+            }
+        }
+
+        if (dadosValidos) {
+            // Validação da quantidade
+            while (true) {
+                System.out.print("Nova quantidade (" + produto.getQuantidade() + "): ");
+                String quantidadeStr = scanner.nextLine();
+                if (quantidadeStr.isEmpty()) {
+                    break;
+                }
+                try {
+                    int quantidade = Integer.parseInt(quantidadeStr);
+                    if (quantidade >= 0) {
+                        novaQuantidade = quantidade;
+                        break;
+                    } else {
+                        System.out.println("Erro: A quantidade não pode ser negativa.");
+                        dadosValidos = false;
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Erro: Digite um número inteiro válido.");
+                    dadosValidos = false;
+                    break;
+                }
+            }
+        }
+
+        if (dadosValidos) {
+            // Validação do preço
+            while (true) {
+                System.out.print("Novo preço (" + produto.getPreco() + "): ");
+                String precoStr = scanner.nextLine();
+                if (precoStr.isEmpty()) {
+                    break;
+                }
+                try {
+                    double preco = Double.parseDouble(precoStr);
+                    if (preco >= 0) {
+                        novoPreco = preco;
+                        break;
+                    } else {
+                        System.out.println("Erro: O preço não pode ser negativo.");
+                        dadosValidos = false;
+                        break;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Erro: Digite um valor numérico válido.");
+                    dadosValidos = false;
+                    break;
+                }
+            }
+        }
+
+        // Só atualiza o produto se todos os dados forem válidos
+        if (dadosValidos) {
+            // Mostra um resumo das alterações
+            System.out.println("\nResumo das alterações:");
+            if (!novoNome.equals(produto.getNome())) {
+                System.out.println("Nome: " + produto.getNome() + " -> " + novoNome);
+            }
+            if (!novaCategoria.equals(produto.getCategoria())) {
+                System.out.println("Categoria: " + produto.getCategoria() + " -> " + novaCategoria);
+            }
+            if (novaQuantidade != produto.getQuantidade()) {
+                System.out.println("Quantidade: " + produto.getQuantidade() + " -> " + novaQuantidade);
+            }
+            if (novoPreco != produto.getPreco()) {
+                System.out.println("Preço: " + produto.getPreco() + " -> " + novoPreco);
+            }
+
+            System.out.print("\nDeseja salvar as alterações? (S/N): ");
+            String confirmacao = scanner.nextLine();
+            
+            if (confirmacao.equalsIgnoreCase("S")) {
+                produto.setNome(novoNome);
+                produto.setCategoria(novaCategoria);
+                produto.setQuantidade(novaQuantidade);
+                produto.setPreco(novoPreco);
+                salvarDados();
+                System.out.println("Produto atualizado com sucesso!");
             } else {
-                System.out.println("Erro: A categoria deve conter apenas letras e espaços.");
+                System.out.println("Atualização cancelada pelo usuário.");
             }
+        } else {
+            System.out.println("Atualização cancelada devido a dados inválidos.");
         }
-
-        // Validação da quantidade
-        while (true) {
-            System.out.print("Nova quantidade (" + produto.getQuantidade() + "): ");
-            String quantidadeStr = scanner.nextLine();
-            if (quantidadeStr.isEmpty()) {
-                break;
-            }
-            try {
-                int quantidade = Integer.parseInt(quantidadeStr);
-                if (quantidade >= 0) {
-                    produto.setQuantidade(quantidade);
-                    break;
-                } else {
-                    System.out.println("Erro: A quantidade não pode ser negativa.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um número inteiro válido.");
-            }
-        }
-
-        // Validação do preço
-        while (true) {
-            System.out.print("Novo preço (" + produto.getPreco() + "): ");
-            String precoStr = scanner.nextLine();
-            if (precoStr.isEmpty()) {
-                break;
-            }
-            try {
-                double preco = Double.parseDouble(precoStr);
-                if (preco >= 0) {
-                    produto.setPreco(preco);
-                    break;
-                } else {
-                    System.out.println("Erro: O preço não pode ser negativo.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Erro: Digite um valor numérico válido.");
-            }
-        }
-
-        salvarDados();
-        System.out.println("Produto atualizado com sucesso!");
     }
 
     public void excluirProduto() {
