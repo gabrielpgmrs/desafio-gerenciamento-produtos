@@ -1,3 +1,4 @@
 [
-  {"id":"001","nome":"leite","categoria":"bebida","quantidade":9,"preco":18,99}
+  {"id":"001","nome":"leite de coco","categoria":"bebida","quantidade":25,"preco":15,99},
+  {"id":"003","nome":"suco","categoria":"bebida","quantidade":20,"preco":8,99}
 ]

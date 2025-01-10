@@ -246,6 +246,7 @@ public class Inventario {
         
         if (confirmacao.equalsIgnoreCase("S")) {
             produtos.remove(produto);
+            Produto.liberarId(produto.getId()); // Libera o ID para reutilização
             salvarDados();
             System.out.println("Produto excluído com sucesso!");
         }
@@ -322,14 +323,17 @@ public class Inventario {
                 json.append(linha);
             }
             
-            // Ao carregar os produtos, encontre o maior ID
-            int maiorId = 0;
+            // Ao carregar os produtos, registra os IDs em uso
             for (Produto p : produtos) {
-                int idAtual = Integer.parseInt(p.getId());
-                if (idAtual > maiorId) {
-                    maiorId = idAtual;
-                }
+                Produto.registrarIdEmUso(p.getId());
             }
+            
+            // Encontra o maior ID para atualizar o contador
+            int maiorId = produtos.stream()
+                .mapToInt(p -> Integer.parseInt(p.getId()))
+                .max()
+                .orElse(0);
+                
             // Atualiza o contador para continuar a sequência
             Produto.atualizarContador(maiorId);
             
